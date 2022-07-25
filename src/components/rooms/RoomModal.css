@@ -1,0 +1,18 @@
+.box {
+	position: absolute;
+	background: rgb(255, 255, 255);
+	width: 100%;
+	max-height: 300px;
+	z-index: 10;
+	border: 1px solid #e2e8f0;
+	border-radius: 5px;
+	overflow: scroll;
+}
+.center{
+	padding:6px 15px;
+	border-bottom: 1px solid #e2e8f0;
+}
+.center:hover{
+	background-color: #81e6d9;
+	cursor: pointer;
+}

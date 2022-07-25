@@ -1,0 +1,46 @@
+.input:focus{
+	border-color: #319795!important;
+	box-shadow: 0 0 0 0 #319795!important;
+}
+.input{
+	outline: none;
+	border: 1px solid #319795!important;
+	border-radius: 0!important;
+}
+.inputCode{
+	outline: none;
+	border: 1px solid red!important;
+	border-radius: 0!important;
+}
+.inputCode:focus{
+	border-color: red!important;
+	box-shadow: 0 0 0 0 red!important;
+}
+.select{
+	outline: none;
+	border: 1px solid red!important;
+	border-radius: 0!important;
+}
+.select:focus{
+	border-color: red!important;
+	box-shadow: 0 0 0 0 red!important;
+}
+.button{
+	border-radius: 0!important;
+}
+.button:focus{
+	box-shadow: 0 0 0 0 #319795!important;
+}
+.joinIn{
+	box-shadow: 0 0 0 0 #319795!important;
+}
+.flex:hover{
+	background-color: #f0f8ff;
+}
+.mainBox{
+	position: relative;
+	width: 100%;
+}
+.box{
+	position: absolute;
+}
