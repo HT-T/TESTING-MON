@@ -17,7 +17,9 @@ import {
 	addDoc,
 	endAt,
 	startAt,
-	where
+	where,
+	arrayUnion,
+	updateDoc
 } from "firebase/firestore";
 import {
 	useAuth
@@ -166,6 +168,7 @@ function Modules() {
 		getDocs(reslut).then(snapshot => {
 			var arr = [];
 			snapshot.forEach((doc) => {
+				console.log(doc.data())
 				arr.push({
 					id: doc.id,
 					moduleCode: doc.data().moduleCode,
@@ -183,6 +186,12 @@ function Modules() {
 
 	const JoinIn = () => {
 		onClose()
+		updateDoc(doc(db, "users", user.uid), {
+		  rooms: arrayUnion(id),
+		});
+		updateDoc(doc(db, "groups", id), {
+		  members: arrayUnion(user.uid),
+		});
 		navigate("/focusroom", {
 			state: {
 				r_id: id,
@@ -217,7 +226,7 @@ function Modules() {
 									<Text> Module Code </Text> 
 								</Center>
 								<Center flex = {1}>
-									<Text>Action</Text> 
+									<Text>Operate</Text> 
 								</Center> 
 							</Flex> 
 							<Box color = "#888"> 
@@ -249,10 +258,10 @@ function Modules() {
 									<Text>Module Code</Text> 
 								</Center> 
 								<Center flex = {1}>
-									<Text>Room Name</Text>
+									<Text>Founder</Text>
 								</Center > 
 								<Center flex = {1}>
-									<Text>Action</Text> 
+									<Text>Operate</Text> 
 								</Center> 
 							</Flex> 
 						<Box color = "#888">
@@ -265,7 +274,7 @@ function Modules() {
 										<Text>{item.name}</Text> 
 									</Center> 
 									<Center flex = {1}>
-										<Button className = "joinIn" colorScheme = 'teal' size = 'sm' onClick = {(e) => (joinHandle(item.id))}> Join Room </Button>
+										<Button className = "joinIn" colorScheme = 'teal' size = 'sm' onClick = {(e) => (joinHandle(item.id))}> Join In </Button>
 									</Center > 
 								</Flex>))}
 						</Box>

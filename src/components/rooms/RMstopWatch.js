@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { doc,updateDoc} from "firebase/firestore";
+import React, { useState, useEffect,useRef } from "react";
+import { doc,updateDoc, query, where,collection,getDocs} from "firebase/firestore";
 import { useAuth } from "../../hooks/useAuth";
 import { Text,Flex,Center,ButtonGroup,Button } from "@chakra-ui/react";
 import "./RMstopWatch.css";
@@ -8,6 +8,7 @@ const Stopwatch = () => {
   const { db,user } = useAuth();
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
+  const TimeArray = useRef([]);
   
   useEffect(() => {
     let interval;
@@ -16,9 +17,37 @@ const Stopwatch = () => {
         setTime((prevTime) => prevTime + 10);
       }, 10);
     } else if (!running) {
-		updateDoc(doc(db, "users",user.uid),{
-		    time: time,
+		let connect = collection(db, "users");
+		const reslut= query(connect,where('uid','==',user.uid));
+		getDocs(reslut).then(snapshot=>{
+			snapshot.forEach(async (docs)=>{
+				if(!time)return;
+				TimeArray.current = docs.data().time;
+				let isExist = docs.data().time.some((item)=>{
+					return item.id == new Date().getDate();
+				});
+				if(isExist){
+					TimeArray.current.forEach((item)=>{
+						if(item.id == new Date().getDate()){
+							item.times += time;
+						}
+					})
+				}else{
+					if(TimeArray.current.length >= 7){
+						TimeArray.current.splice(0,1);
+					}
+					TimeArray.current.push({
+						id:new Date().getDate(),
+						times:time
+					})
+				}
+				await updateDoc(doc(db, "users",user.uid),{
+				    time:TimeArray.current,
+				});
+				setTime(0);
+			})
 		});
+		 
       clearInterval(interval);
     }
     return () => clearInterval(interval);

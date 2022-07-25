@@ -11,18 +11,31 @@ export default function Scoreboard() {
 	const request =(nums)=>{
 		setScoreList([])
 		let connect = collection(db, "users");
-		const reslut= query(connect,orderBy('time','asc'),limit(nums));
+		const reslut= query(connect);
 		getDocs(reslut).then(snapshot=>{
 			let arr = [];
 			snapshot.forEach((doc)=>{
-				arr.push({
-					id:doc.id,
-					name:doc.data().name,
-					time:doc.data().time
-				})
+				if(Array.prototype.isPrototypeOf(doc.data().time)){
+					let num = 0;
+					doc.data().time.forEach((item)=>{
+						num +=item.times;
+					})
+					arr.push({
+						id:doc.id,
+						name:doc.data().name,
+						time:num
+					})
+				}else{
+					arr.push({
+						id:doc.id,
+						name:doc.data().name,
+						time:0
+					})
+				}
+				
 			})
 			arr.sort((a,b)=>(b.time-a.time));
-			setScoreList(arr);
+			setScoreList(arr.splice(0,nums));
 		});
 	}
 	

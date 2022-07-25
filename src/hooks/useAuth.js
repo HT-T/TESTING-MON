@@ -94,8 +94,7 @@ export function ProvideAuth({ children }) {
           email: user.email,
           photoURL: user.photoURL,
           authProvider: "google",
-          rooms: [],
-		  time:''
+          rooms: []
         });
         await setDoc(doc(db, "friends", user.uid), {
           friends: [],
@@ -125,6 +124,7 @@ export function ProvideAuth({ children }) {
         password
       );
       const user = res.user;
+	  
       //await addDoc(collection(db, "users"), {
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
@@ -132,8 +132,7 @@ export function ProvideAuth({ children }) {
         email: email,
         photoURL: user.photoURL,
         authProvider: "local",
-        rooms: [],
-		time:''
+        rooms: []
       });
 
       await setDoc(doc(db, "friends", user.uid), {friends:[], friendRequest:[]});
